@@ -1330,23 +1330,7 @@ function submitForm(){
     s.classList.add('visible');
     setTimeout(() => s.classList.remove('visible'), 5000);
   })
-  .catch(err => {
-    console.log("EMAILJS ERROR FULL:", err);
-    console.log("STATUS:", err?.status);
-    console.log("TEXT:", err?.text);
-
-    alert(
-      "Status: " + (err?.status || "unknown") +
-      "\nMessage: " + (err?.text || JSON.stringify(err))
-    );
-
-    btn.innerHTML = '<span>SEND MESSAGE</span>';
-    btn.disabled = false;
-
-    showFormError(
-      'EmailJS Error: ' + (err?.text || 'Unknown error')
-    );
-});
+  .catch(err => { console.error('EmailJS error:', err); btn.innerHTML = '<span>SEND MESSAGE</span>'; btn.disabled = false; showFormError('Something went wrong. Please email me directly at shahkhant2024@gmail.com'); }); }
 
 function showFormError(msg){
   const existing = document.getElementById('form-error');
