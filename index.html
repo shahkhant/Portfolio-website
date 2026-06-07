@@ -1295,7 +1295,6 @@ function submitForm(){
   const subject = document.getElementById('f-subject').value.trim();
   const msg     = document.getElementById('f-message').value.trim();
 
-  // Basic validation
   if(!name || !email || !msg){
     showFormError('Please fill in your name, email and message.');
     return;
@@ -1310,28 +1309,34 @@ function submitForm(){
   btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg><span>SENDING...</span>`;
   btn.disabled = true;
 
+  const now = new Date();
+  const time = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' });
+
   emailjs.send('service_k7olcki', 'template_76x142p', {
     name:    name,
     email:   email,
-    subject:      subject || 'Portfolio Contact from ' + name,
-    msg:      msg,
-    reply_to:     email,
+    subject: subject || 'Portfolio Contact from ' + name,
+    msg:     msg,
+    time:    time,
   })
   .then(() => {
     btn.innerHTML = '<span>SEND MESSAGE</span>';
     btn.disabled = false;
-    // Clear fields
     document.getElementById('f-name').value    = '';
     document.getElementById('f-email').value   = '';
     document.getElementById('f-subject').value = '';
     document.getElementById('f-message').value = '';
-    // Show success
     const s = document.getElementById('form-success');
     s.classList.add('visible');
     setTimeout(() => s.classList.remove('visible'), 5000);
   })
-  .catch(err => { console.error('EmailJS error:', err); btn.innerHTML = '<span>SEND MESSAGE</span>'; btn.disabled = false; showFormError('Something went wrong. Please email me directly at shahkhant2024@gmail.com'); }); }
-
+  .catch(err => {
+    console.error('EmailJS error:', err);
+    btn.innerHTML = '<span>SEND MESSAGE</span>';
+    btn.disabled = false;
+    showFormError('Something went wrong. Please email me directly at shahkhant13@gmail.com');
+  });
+}
 function showFormError(msg){
   const existing = document.getElementById('form-error');
   if(existing) existing.remove();
